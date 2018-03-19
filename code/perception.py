@@ -69,13 +69,29 @@ def pix_to_world(xpix, ypix, xpos, ypos, yaw, world_size, scale):
     # Return the result
     return x_pix_world, y_pix_world
 
+# Find rock
+def find_rock(img, upper_thr=(255, 215, 70),lower_thr=(105, 85, 0)):
+    #set the channel 2 to 70 because 80 is too high 
+    color_select = np.zeros_like(img[:,:,0])
+
+    thresh = (img[:,:,0] > lower_thr[0]) \
+           & (img[:,:,1] > lower_thr[1]) \
+           & (img[:,:,2] > lower_thr[2]) \
+           & (img[:,:,0] < upper_thr[0]) \
+           & (img[:,:,1] < upper_thr[1]) \
+           & (img[:,:,2] < upper_thr[2]) \
+                
+    color_select[thresh] = 1     
+    
+    return color_select
+
 # Define a function to perform a perspective transform
 def perspect_transform(img, src, dst):
            
     M = cv2.getPerspectiveTransform(src, dst)
     warped = cv2.warpPerspective(img, M, (img.shape[1], img.shape[0]))# keep same size as input image
-    
-    return warped
+    mask = cv2.warpPerspective(np.ones_like(img[:,:,0]), M, (img.shape[1], img.shape[0]))# keep same size as input image
+    return warped , mask
 
 
 # Apply the above functions in succession and update the Rover state accordingly
@@ -103,7 +119,66 @@ def perception_step(Rover):
         # Rover.nav_dists = rover_centric_pixel_distances
         # Rover.nav_angles = rover_centric_angles
     
+    # The destination box will be 2*dst_size on each side
+    dst_size = 5 
+    # Set a bottom offset to account for the fact that the bottom of the image 
+    # is not the position of the rover but a bit in front of it
+    # this is just a rough guess, feel free to change it!
+    bottom_offset = 6
+    image = Rover.img
+    source = np.float32([[14, 140], [301 ,140],[200, 96], [118, 96]])
+    destination = np.float32([[image.shape[1]/2 - dst_size, image.shape[0] - bottom_offset],
+                    [image.shape[1]/2 + dst_size, image.shape[0] - bottom_offset],
+                    [image.shape[1]/2 + dst_size, image.shape[0] - 2*dst_size - bottom_offset], 
+                    [image.shape[1]/2 - dst_size, image.shape[0] - 2*dst_size - bottom_offset],
+                    ])
+
+        # Define source and destination points & Apply perspective transform
+    warped, mask = perspect_transform(image, source, destination)
+        # Apply color threshold 
+    threshed = color_thresh(warped)
+        # Convert obstacles
+    obs_map = np.absolute(np.float32(threshed)-1) * mask
+        # Convert rover-centric pixel values to world coords
+    world_size = Rover.worldmap.shape[0]
+       
+    Rover.vision_image[:,:,2] = threshed * 255
+    Rover.vision_image[:,:,0] = obs_map * 255
+
+        # Get position from data
+    scale = 2 * dst_size
  
-    
-    
+        # Convert thresholded values to rover-centric coords
+    ter_x_pix, ter_y_pix = rover_coords(threshed)
+    ter_x_world, ter_y_world = pix_to_world(ter_x_pix, ter_y_pix, Rover.pos[0], Rover.pos[1], Rover.yaw, world_size, scale)
+        # Convert obstacles values to rover-centric coords
+    obs_x_pix, obs_y_pix = rover_coords(obs_map)
+    obs_x_world, obs_y_world = pix_to_world(obs_x_pix, obs_y_pix, Rover.pos[0], Rover.pos[1], Rover.yaw, world_size, scale)
+      
+    Rover.worldmap[ter_y_world, ter_x_world, 2] +=10#= 255
+    Rover.worldmap[obs_y_world, obs_x_world, 0] +=1#= 255
+
+    dist, angles = to_polar_coords(ter_x_pix,ter_y_pix)
+    Rover.nav_angles = angles
+
+        # Find rock
+    rock_map = find_rock(warped, upper_thr=(255, 215, 70),lower_thr=(105, 85, 0))
+    if rock_map.any():
+        rock_x, rock_y = rover_coords(rock_map)
+        rock_x_world, rock_y_world = pix_to_world(rock_x, rock_y, Rover.pos[0], Rover.pos[1], Rover.yaw, world_size, scale)
+        Rover.worldmap[rock_y_world, rock_x_world, 1] = 255
+
+        rock_dist, rock_angles = to_polar_coords(rock_x,rock_y)
+        rock_idx = np.argmin(rock_dist)
+        rockx = rock_x_world[rock_idx]
+        rocky = rock_y_world[rock_idx]
+
+        Rover.worldmap[rocky,rockx,1] = 255
+        Rover.vision_image[:,:,1] = rock_map * 255
+
+    else:
+
+
+
+        Rover.vision_image[:,:,1] = 0
     return Rover
