@@ -17,14 +17,13 @@
 * Iterate on your perception and decision function until your rover does a reasonable (need to define metric) job of navigating and mapping.  
 
 [//]: # (Image References)
-
-[image1]: ./misc/rover_image.jpg
 [image_grad]: ./calibration_images/example_grid1.jpg
-[image_rock1]: ./calibration_images/example_rock1.jpg 
-[image_rock2]: ./calibration_images/example_rock2.jpg 
-[image_rock3]: ./calibration_images/example_rock3.jpg 
-[image_rock4]: ./calibration_images/example_rock4.jpg 
+[image_rock1]: ./calibration_images/example_rock1.jpg
+[image_rock2]: ./calibration_images/example_rock2.jpg
+[image_rock3]: ./calibration_images/example_rock3.jpg
+[image_rock4]: ./calibration_images/example_rock4.jpg
 [image_find]: ./misc/Find_rock.jpg
+
 ---
 ### Writeup / README
 
