@@ -238,16 +238,14 @@ def perception_step(Rover):
     return Rover
 ```
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
-Ｒesult can pass the requirement.
-Ｔhe following items could improve in the feture
+Results can pass the requirement.
+The following items could improve in the feture
 1. When the rover hit the rock or wall, it can't get away.
 2. Finish the pick rock.
 3. Modify the "decision" function to make more state for decision making.
 4. When in it goes circle, it should identify the condition and escape.
 
-Test condition is 1920*1080 with good quality 33 FPS
-
-![alt text][image_result1]
+Test condition is 1920*1080 with good quality with 33 FPS
 
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
