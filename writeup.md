@@ -29,7 +29,7 @@
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
 
-You're reading it!
+Most of the modified codes basically follows "Project Walkthrough" instruction.
 
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
@@ -71,10 +71,27 @@ channel 0  max =  254 min =  106
 channel 1  max =  215 min =  86
 channel 2  max =  84 min =  0
 ```
+```sh
+def find_rock(img, upper_thr=(255, 215, 70),lower_thr=(105, 85, 0)):
+    #set the channel 2 to 70 because 80 is too high 
+    color_select = np.zeros_like(img[:,:,0])
+
+    thresh = (img[:,:,0] > lower_thr[0]) \
+           & (img[:,:,1] > lower_thr[1]) \
+           & (img[:,:,2] > lower_thr[2]) \
+           & (img[:,:,0] < upper_thr[0]) \
+           & (img[:,:,1] < upper_thr[1]) \
+           & (img[:,:,2] < upper_thr[2]) \
+                
+    color_select[thresh] = 1     
+    
+    return color_select
+```
 ![alt text][image_find]
 
 b) obstacle  
 In perspect_transform, I created a mask for the non observed area and used it to get the obstacle map
+
 ```sh  
      mask = cv2.warpPerspective(np.ones_like(img[:,:,0]), M, (img.shape[1], img.shape[0]))# keep same size as input image
 ```
