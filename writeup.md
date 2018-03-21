@@ -36,7 +36,7 @@ Most of the modified codes basically follow "Project Walkthrough" instruction. R
 a) Find rock  
 In the calibration_images, there are two kinds of rock, one is in the dark side and on in the bright side.
 Base on this two picture, I cut it and remained the rock rock part. By using the find_rock_thresh function to figure out 
-how to set the threshold. Base on the value, I still need to tweak it a little bit. Ref[2]
+how to set the threshold. Base on the value, I still need to tweak it a little bit. Ref[2]  
 ![alt text][image_rock3]  
 ![alt text][image_rock4]
 
