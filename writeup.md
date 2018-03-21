@@ -248,5 +248,6 @@ The following items could improve in the feture
 
 Test condition is 1920*1080 with good quality with 33 FPS
 
+Reference:  Project Walkthrough 
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
