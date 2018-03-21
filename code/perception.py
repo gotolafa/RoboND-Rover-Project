@@ -155,8 +155,8 @@ def perception_step(Rover):
     obs_x_pix, obs_y_pix = rover_coords(obs_map)
     obs_x_world, obs_y_world = pix_to_world(obs_x_pix, obs_y_pix, Rover.pos[0], Rover.pos[1], Rover.yaw, world_size, scale)
       
-    Rover.worldmap[ter_y_world, ter_x_world, 2] +=10#= 255
-    Rover.worldmap[obs_y_world, obs_x_world, 0] +=1#= 255
+    Rover.worldmap[ter_y_world, ter_x_world, 2] +=30
+    Rover.worldmap[obs_y_world, obs_x_world, 0] +=1
 
     dist, angles = to_polar_coords(ter_x_pix,ter_y_pix)
     Rover.nav_angles = angles
