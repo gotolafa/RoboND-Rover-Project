@@ -29,14 +29,14 @@
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
 
-Most of the modified codes basically follow "Project Walkthrough" instruction.
+Most of the modified codes basically follow "Project Walkthrough" instruction. Ref[1]
 
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 a) Find rock  
 In the calibration_images, there are two kinds of rock, one is in the dark side and on in the bright side.
 Base on this two picture, I cut it and remained the rock rock part. By using the find_rock_thresh function to figure out 
-how to set the threshold. Base on the value, I still need to tweak it a little bit.  
+how to set the threshold. Base on the value, I still need to tweak it a little bit. Ref[2]
 ![alt text][image_rock3]  
 ![alt text][image_rock4]
 
@@ -265,6 +265,8 @@ The following items could improve in the feture
 
 Test condition is 1920*1080 with good quality with 33 FPS
 
-Reference:  Project Walkthrough 
+Reference:
+Ref[1]  Project Walkthrough 
+Ref[2] https://ddnews.me/tech/zmc5e4e6.html
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
